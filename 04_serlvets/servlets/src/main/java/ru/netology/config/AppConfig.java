@@ -18,7 +18,6 @@ public class AppConfig {
     public PostService postService() {
         return new PostService(postRepository());
     }
-
     @Bean
     public PostController postController() {
         return new PostController(postService());

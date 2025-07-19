@@ -14,10 +14,31 @@ public class MainServlet extends HttpServlet {
 
   private PostController controller;
 
-  @Override
-  public void init() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-    controller = context.getBean(PostController.class);
+  package ru.netology.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import ru.netology.repository.PostRepository;
+import ru.netology.service.PostService;
+import ru.netology.controller.PostController;
+
+  @Configuration
+  public class AppConfig {
+
+    @Bean
+    public PostRepository postRepository() {
+      return new PostRepository();
+    }
+
+    @Bean
+    public PostService postService() {
+      return new PostService(postRepository());
+    }
+
+    @Bean
+    public PostController postController() {
+      return new PostController(postService());
+    }
   }
 
   @Override
@@ -46,7 +67,6 @@ public class MainServlet extends HttpServlet {
         controller.removeById(id, resp);
         return;
       }
-
       resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
     } catch (Exception e) {
       e.printStackTrace();
