@@ -20,7 +20,6 @@ public class MainServlet extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-
     PostRepository postRepository = new PostRepository();
     PostService postService = new PostService(postRepository);
     controller = new PostController(postService);
