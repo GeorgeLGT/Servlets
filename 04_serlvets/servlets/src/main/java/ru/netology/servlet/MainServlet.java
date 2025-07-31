@@ -2,14 +2,12 @@ package ru.netology.servlet;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import ru.netology.config.AppConfig;
 import ru.netology.controller.PostController;
-import ru.netology.repository.PostRepository;
-import ru.netology.service.PostService;
 
 public class MainServlet extends HttpServlet {
   private static final String PATH_POSTS = "/api/posts";
@@ -20,9 +18,8 @@ public class MainServlet extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    PostRepository postRepository = new PostRepository();
-    PostService postService = new PostService(postRepository);
-    controller = new PostController(postService);
+    ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+    controller = context.getBean(PostController.class);
   }
 
   @Override
